@@ -37,6 +37,7 @@
     float altcommand; //The helios's commanded altitute/elevation angle
     float azcommand; //The helios's commanded azimuch angle
     float altitude, azimuth, delta, h; //Some variables used in functions later
+
   
   //////////////////////////////////////////////////  
   //Attaching Servos
@@ -75,8 +76,8 @@ void loop(){
   //////////////////////////////////////////////////  
   //Find the location of the sun
   //////////////////////////////////////////////////  
-    DateTime now = RTC.now();  
-    DateTime future = (now + TimeSpan(0,1,0,0)); // Do this to get UT in currect location. Lisbon is UTC+1.
+    DateTime now = RTC.now(); 
+    DateTime future = (now + TimeSpan(0,1,0,0)); // Do this to get UT in currect location. Lisbon is UTC+1.??
 
     helios.calcSunPos(future.year(),future.month(),future.day(),
     future.hour(), future.minute(),future.second(),longitude,latitude); 
@@ -93,15 +94,15 @@ void loop(){
       altcommand=offset_Elv-dElevation; //So that the servo's range of motion is aligned with the sun's visable range of motion
       azcommand=offset_Az-dAzimuth; //So that the servo's range of motion is aligned with the sun's visable range of motion
       altServoMotor.write(altcommand); //Command the altitude servo to the reported position
-      Serial.println(" ");
-      Serial.print("Commanded Elevation =");
-      Serial.println( altServoMotor.read()); //Print the angle the servo moved to
-      Serial.println(" ");
+//      Serial.println(" ");
+//      Serial.print("Commanded Elevation =");
+//      Serial.println( altServoMotor.read()); //Print the angle the servo moved to
+//      Serial.println(" ");
       delay(3000); //SHould be 5000 Give the Altitude servo time to move to position, so the source voltage doesn't drop below the 4.5 volt limit of the servo
       azServoMotor.write(azcommand); //Command the azimuth servo to the reported position
-      Serial.print("Commanded Azimuth =");
-      Serial.println(azServoMotor.read()); //Print the angle the servo moved to
-      Serial.println(" ");
+//      Serial.print("Commanded Azimuth =");
+//      Serial.println(azServoMotor.read()); //Print the angle the servo moved to
+//      Serial.println(" ");
       delay(3000); //Should be 5000 Give the Azimuth servo time to move to position, so the source voltage doesn't drop below the 4.5 volt limit of the servo
      }
       
@@ -109,6 +110,74 @@ void loop(){
   //Act like heliostat
   ////////////////////////////////////////////////// 
     if (heliostat==1) {
+
+      // //////////////////////////////////////////
+      // this is to control the servo with keyboard
+      // //////////////////////////////////////////
+      
+      if (Serial.available()) {  // Returns true if there is serial input.
+      char ch = Serial.read();
+    
+        if (ch == 's') {
+          
+        // Make sure not to exceed the mechanical limitation.
+          if (targetalt < 180) {
+            
+            targetalt = targetalt+1;
+             }
+          } else {
+        // Make sure not to exceed the mechanical limitation.
+          if (targetalt > 0) {
+            targetalt = targetalt-1;
+           }
+        }
+
+        if (ch == 'w') {
+          
+        // Make sure not to exceed the mechanical limitation.
+          if (targetalt < 180) {
+            
+            targetalt = targetalt-0.1;
+             }
+          } else {
+        // Make sure not to exceed the mechanical limitation.
+          if (targetalt > 0) {
+            targetalt = targetalt+0.1;
+           }
+        }
+
+        if (ch == 'a') {
+          
+        // Make sure not to exceed the mechanical limitation.
+          if (targetaz < 270) {
+            
+            targetaz = targetaz-1;
+             }
+          } else {
+        // Make sure not to exceed the mechanical limitation.
+          if (targetaz > 0) {
+            targetaz = targetaz+1;
+           }
+        }
+
+          if (ch == 'd') {
+          
+        // Make sure not to exceed the mechanical limitation.
+          if (targetaz < 270) {
+            
+            targetaz = targetaz+1;
+             }
+          } else {
+        // Make sure not to exceed the mechanical limitation.
+          if (targetaz > 0) {
+            targetaz = targetaz-1;
+           }
+        }
+
+
+        
+      }
+      
     altcommand= FindHeliostatAngle(dElevation, dAzimuth, targetalt, targetaz, 1); //Shifted so that the servo's zero is aligned with the coord. sys zero
     azcommand= FindHeliostatAngle(dElevation, dAzimuth, targetalt, targetaz, 2); //Shifted so that the servo's zero is centered on the coordinate systems values for of 180degrees
     altServoMotor.write(altcommand); //Command the altitude servo to the reported position
@@ -116,12 +185,12 @@ void loop(){
     Serial.print("Commanded Elevation =");
     Serial.println( altServoMotor.read()); //Print the angle the servo was told to move to
     Serial.println(" ");
-    delay(5000); //Give the Altitude servo time to move to position, so the source voltage doesn't drop below 4.5 volts
+    delay(500); //Give the Altitude servo time to move to position, so the source voltage doesn't drop below 4.5 volts
     azServoMotor.write(azcommand); //Command the azimuth servo to the reported position
     Serial.print("Commanded Azimuth =");
     Serial.println(azServoMotor.read()); //Print the angle the servo moved to
     Serial.println(" ");
-    delay(5000); //Give the Altitude servo time to move to position, so the source voltage doesn't drop below 4.5 volts
+    delay(500); //Give the Altitude servo time to move to position, so the source voltage doesn't drop below 4.5 volts
     }  
 }
  
