@@ -19,12 +19,12 @@
     //The device will act like a heliostat if this is 1 and a solar panel if this is 0
     int heliostat=1; 
   
-    //Put your latitude and longitude here ... currently of Anjos
-    float latitude = 38.725;
-    float longitude = -9.135;
+    //Put your latitude and longitude here ... currently of Anjos. Are these the other way around??
+    float latitude = -9.13;
+    float longitude = 38.72;
     
     //Your Heliostat target, with respect to helios's coordinates
-    float targetalt = 0;
+    float targetalt = 20;
     float targetaz = 0;
     
   //////////////////////////////////////////////////  
@@ -115,68 +115,68 @@ void loop(){
       // this is to control the servo with keyboard
       // //////////////////////////////////////////
       
-      if (Serial.available()) {  // Returns true if there is serial input.
-      char ch = Serial.read();
-    
-        if (ch == 's') {
-          
-        // Make sure not to exceed the mechanical limitation.
-          if (targetalt < 180) {
-            
-            targetalt = targetalt+1;
-             }
-          } else {
-        // Make sure not to exceed the mechanical limitation.
-          if (targetalt > 0) {
-            targetalt = targetalt-1;
-           }
-        }
-
-        if (ch == 'w') {
-          
-        // Make sure not to exceed the mechanical limitation.
-          if (targetalt < 180) {
-            
-            targetalt = targetalt-0.1;
-             }
-          } else {
-        // Make sure not to exceed the mechanical limitation.
-          if (targetalt > 0) {
-            targetalt = targetalt+0.1;
-           }
-        }
-
-        if (ch == 'a') {
-          
-        // Make sure not to exceed the mechanical limitation.
-          if (targetaz < 270) {
-            
-            targetaz = targetaz-1;
-             }
-          } else {
-        // Make sure not to exceed the mechanical limitation.
-          if (targetaz > 0) {
-            targetaz = targetaz+1;
-           }
-        }
-
-          if (ch == 'd') {
-          
-        // Make sure not to exceed the mechanical limitation.
-          if (targetaz < 270) {
-            
-            targetaz = targetaz+1;
-             }
-          } else {
-        // Make sure not to exceed the mechanical limitation.
-          if (targetaz > 0) {
-            targetaz = targetaz-1;
-           }
-        }
-
-
-        
-      }
+//      if (Serial.available()) {  // Returns true if there is serial input.
+//      char ch = Serial.read();
+//    
+//        if (ch == 's') {
+//          
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetalt < 180) {
+//            
+//            targetalt = targetalt+1;
+//             }
+//          } else {
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetalt > 0) {
+//            targetalt = targetalt-1;
+//           }
+//        }
+//
+//        if (ch == 'w') {
+//          
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetalt < 180) {
+//            
+//            targetalt = targetalt-0.1;
+//             }
+//          } else {
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetalt > 0) {
+//            targetalt = targetalt+0.1;
+//           }
+//        }
+//
+//        if (ch == 'a') {
+//          
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetaz < 270) {
+//            
+//            targetaz = targetaz-1;
+//             }
+//          } else {
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetaz > 0) {
+//            targetaz = targetaz+1;
+//           }
+//        }
+//
+//          if (ch == 'd') {
+//          
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetaz < 270) {
+//            
+//            targetaz = targetaz+1;
+//             }
+//          } else {
+//        // Make sure not to exceed the mechanical limitation.
+//          if (targetaz > 0) {
+//            targetaz = targetaz-1;
+//           }
+//        }
+//
+//
+//        
+//      }
       
     altcommand= FindHeliostatAngle(dElevation, dAzimuth, targetalt, targetaz, 1); //Shifted so that the servo's zero is aligned with the coord. sys zero
     azcommand= FindHeliostatAngle(dElevation, dAzimuth, targetalt, targetaz, 2); //Shifted so that the servo's zero is centered on the coordinate systems values for of 180degrees
